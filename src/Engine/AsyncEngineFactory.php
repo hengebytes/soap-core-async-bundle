@@ -20,7 +20,7 @@ abstract class AsyncEngineFactory
     public static function createFromWSDL(string $location, HttpClientInterface $httpClient): AsyncEngine
     {
         if (!isset(self::$engines[$location])) {
-            $wsdl = (new Wsdl1Reader)(new FlatteningLoader(new StreamWrapperLoader()))(
+            $wsdl = (new Wsdl1Reader(new FlatteningLoader(new StreamWrapperLoader())))(
                 $location,
                 ParserContext::defaults()
             );

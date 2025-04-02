@@ -2,6 +2,7 @@
 
 namespace Hengebytes\SoapCoreAsyncBundle\Engine;
 
+use Hengebytes\SoapCoreAsyncBundle\Response\SoapResponse;
 use Psr\Http\Message\RequestInterface;
 use Soap\Engine\Driver;
 use Soap\Engine\HttpBinding\SoapRequest;
@@ -10,7 +11,6 @@ use Soap\Xml\Builder\SoapHeaders;
 use Soap\Xml\Manipulator\PrependSoapHeaders;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use SynxisBundle\Response\SoapResponse;
 use VeeWee\Xml\Dom\Document;
 
 readonly class AsyncEngine
