@@ -16,7 +16,7 @@ return [
 ];
 ```
 
-## [Usage](https:://github.com/hengebytes/webservice-core-async-bundle)
+## [Usage](https://github.com/hengebytes/webservice-core-async-bundle)
 
 ### If you need some custom SOAP headers, you can add it to the request with middleware.
 ```php
