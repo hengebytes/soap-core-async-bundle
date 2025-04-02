@@ -1,0 +1,26 @@
+{
+    "name": "hengebytes/soap-core-async-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony bundle for using http client as soap async client",
+    "keywords": [
+        "ASYNC HTTP Client",
+        "PHP Soap",
+        "Symfony",
+        "Bundle"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.3",
+        "hengebytes/webservice-core-async-bundle": "^1.3.0",
+        "php-soap/engine": "^2.14.0",
+        "php-soap/encoding": "~0.15",
+        "php-soap/psr18-transport": "^1.7",
+        "php-soap/wsdl-reader": "~0.21",
+        "symfony/dependency-injection": "^6.4 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hengebytes\\SoapCoreAsyncBundle\\": "src/"
+        }
+    }
+}

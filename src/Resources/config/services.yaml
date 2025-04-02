@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Hengebytes\SoapCoreAsyncBundle\:
+        resource: '../../'
+        exclude:
+            - '../../DependencyInjection'
+            - '../../Engine'
+            - '../../Resources'
+            - '../../Response'
+            - '../../HBSoapCoreAsyncBundle.php'
+
+
