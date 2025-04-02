@@ -32,6 +32,6 @@ readonly class SoapAsyncRequestHandler extends BaseRequestHandler
         $requestOptions = $request->getOptions();
         $client = AsyncEngineFactory::createFromWSDL($requestOptions['base_uri'], $this->client);
 
-        return $client->request($request->action, $request->getRequestParams(), $requestOptions['headers']);
+        return $client->request($request->action, $request->getRequestParams(), $requestOptions['headers'] ?? []);
     }
 }
