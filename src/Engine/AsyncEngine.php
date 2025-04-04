@@ -47,10 +47,10 @@ readonly class AsyncEngine
 
         $psr7Request = $this->converter->convertSoapRequest($request);
 
-        return new SoapResponse($this->makeRe($psr7Request), $this->driver, $method);
+        return new SoapResponse($this->makeRequest($psr7Request), $this->driver, $method);
     }
 
-    private function makeRe(RequestInterface $request): ResponseInterface
+    private function makeRequest(RequestInterface $request): ResponseInterface
     {
         $body = $request->getBody();
         $headers = $request->getHeaders();

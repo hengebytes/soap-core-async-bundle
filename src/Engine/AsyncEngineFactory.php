@@ -2,6 +2,7 @@
 
 namespace Hengebytes\SoapCoreAsyncBundle\Engine;
 
+use Hengebytes\SoapCoreAsyncBundle\Wsdl\FileCacheWsdlLoader;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Soap\Encoding\Driver;
 use Soap\Encoding\EncoderRegistry;
@@ -20,7 +21,7 @@ abstract class AsyncEngineFactory
     public static function createFromWSDL(string $location, HttpClientInterface $httpClient): AsyncEngine
     {
         if (!isset(self::$engines[$location])) {
-            $wsdl = (new Wsdl1Reader(new FlatteningLoader(new StreamWrapperLoader())))(
+            $wsdl = (new Wsdl1Reader(new FileCacheWsdlLoader(new FlatteningLoader(new StreamWrapperLoader()))))(
                 $location,
                 ParserContext::defaults()
             );
