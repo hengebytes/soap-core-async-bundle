@@ -22,7 +22,10 @@ readonly class AsyncEngine
     ) {
     }
 
-    public function request(string $method, array $arguments, array $headers = []): ResponseInterface
+    /**
+     * @return array{0: SoapRequest, 1: SoapResponse} An array containing the prepared SoapRequest object and the resulting SoapResponse.
+     */
+    public function request(string $method, array $arguments, array $headers = []): array
     {
         $request = $this->driver->encode($method, [$arguments]);
 
@@ -47,7 +50,10 @@ readonly class AsyncEngine
 
         $psr7Request = $this->converter->convertSoapRequest($request);
 
-        return new SoapResponse($this->makeRequest($psr7Request), $this->driver, $method);
+        return [
+            $request,
+            new SoapResponse($this->makeRequest($psr7Request), $this->driver, $method),
+        ];
     }
 
     private function makeRequest(RequestInterface $request): ResponseInterface
