@@ -11,5 +11,3 @@ services:
             - '../../Resources'
             - '../../Response'
             - '../../HBSoapCoreAsyncBundle.php'
-
-
