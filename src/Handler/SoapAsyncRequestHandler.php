@@ -3,6 +3,7 @@
 namespace Hengebytes\SoapCoreAsyncBundle\Handler;
 
 use Hengebytes\SoapCoreAsyncBundle\Engine\AsyncEngineFactory;
+use Hengebytes\SoapCoreAsyncBundle\Request\SoapWSRequest;
 use Hengebytes\WebserviceCoreAsyncBundle\Cache\CacheManager;
 use Hengebytes\WebserviceCoreAsyncBundle\Handler\BaseRequestHandler;
 use Hengebytes\WebserviceCoreAsyncBundle\Middleware\RequestModification;
@@ -29,13 +30,19 @@ readonly class SoapAsyncRequestHandler extends BaseRequestHandler
      */
     protected function performRequest(WSRequest $request): ResponseInterface
     {
+        if (!$request instanceof SoapWSRequest) {
+            throw new \InvalidArgumentException(
+                'SoapAsyncRequestHandler can only handle SoapWSRequest but got ' . get_class($request)
+            );
+        }
+
         $requestOptions = $request->getOptions();
         $client = AsyncEngineFactory::createFromWSDL($requestOptions['base_uri'], $this->client);
 
         [$req, $res] = $client->request(
             $request->action, $request->getRequestParams(), $requestOptions['headers'] ?? []
         );
-        $request->setBody(['body' => $req->getRequest()]);
+        $request->encodedRequest = $req->getRequest();
 
         return $res;
     }
