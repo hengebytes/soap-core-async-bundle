@@ -43,7 +43,7 @@ readonly class ReloadLockedResponseResponseModifier implements ResponseModificat
         }
 
 
-        $this->baseModifier->modify($response);
+        $this->inner->modify($response);
     }
 
     public function supports(AsyncResponse $response): bool
@@ -52,7 +52,7 @@ readonly class ReloadLockedResponseResponseModifier implements ResponseModificat
             return false; // if original disabled - we assume lock mechanism is disabled as well
         }
 
-        return $this->baseModifier->supports($response);
+        return $this->inner->supports($response);
     }
 
     public static function getPriority(): int

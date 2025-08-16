@@ -2,6 +2,7 @@
 
 namespace Hengebytes\SoapCoreAsyncBundle\Engine;
 
+use Hengebytes\SoapCoreAsyncBundle\Builder\SoapEnvHeaders;
 use Hengebytes\SoapCoreAsyncBundle\Response\SoapResponse;
 use Psr\Http\Message\RequestInterface;
 use Soap\Engine\Driver;
@@ -33,11 +34,15 @@ readonly class AsyncEngine
         // add headers
         if (!empty($headers)) {
             $document = Document::fromXmlString($requestPayload);
-            $builtHeaders = $document->build(new SoapHeaders(...$headers));
+
+            $builtHeaders = $document->build(new SoapEnvHeaders(...$headers));
 
             $document->manipulate(new PrependSoapHeaders(...$builtHeaders));
 
-            $requestPayload = $document->toXmlString();
+            // Use C14N to produce clean, non-redundant XML (to avoid issues with duplicate namespaces, etc.)
+            $finalDom = new \DOMDocument();
+            $finalDom->loadXML($document->toUnsafeDocument()->C14N());
+            $requestPayload = $finalDom->saveXML($finalDom->documentElement);
         }
 
         $request = new SoapRequest(
