@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- rpc/encoded service: ArrayOfString derives from soapenc:Array, so php-soap decodes it with its SoapArrayEncoder
+     (base type fallback). The bundle must keep that instead of registering its ObjectEncoder for derived types. -->
+<definitions name="EncodedTest"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://test-uri/"
+    targetNamespace="http://test-uri/">
+    <types>
+        <xsd:schema targetNamespace="http://test-uri/">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+            <xsd:complexType name="ArrayOfString">
+                <xsd:complexContent>
+                    <xsd:restriction base="soapenc:Array">
+                        <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
+                    </xsd:restriction>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="Item">
+                <xsd:all>
+                    <xsd:element name="id" type="xsd:int"/>
+                    <xsd:element name="tags" type="tns:ArrayOfString"/>
+                    <xsd:element name="note" type="xsd:string"/>
+                </xsd:all>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+    <message name="GetItemRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="GetItemResponse">
+        <part name="item" type="tns:Item"/>
+    </message>
+    <portType name="TestPortType">
+        <operation name="GetItem">
+            <input message="tns:GetItemRequest"/>
+            <output message="tns:GetItemResponse"/>
+        </operation>
+    </portType>
+    <binding name="TestBinding" type="tns:TestPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetItem">
+            <soap:operation soapAction="http://test-uri/GetItem"/>
+            <input><soap:body use="encoded" namespace="http://test-uri/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+            <output><soap:body use="encoded" namespace="http://test-uri/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+        </operation>
+    </binding>
+    <service name="TestService">
+        <port name="TestPort" binding="tns:TestBinding">
+            <soap:address location="http://localhost/soap"/>
+        </port>
+    </service>
+</definitions>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Body>
+        <ns1:GetItemResponse xmlns:ns1="http://test-uri/">
+            <item xsi:type="ns1:Item">
+                <id xsi:type="xsd:int">7</id>
+                <tags SOAP-ENC:arrayType="xsd:string[2]" xsi:type="ns1:ArrayOfString">
+                    <item xsi:type="xsd:string">a</item>
+                    <item xsi:type="xsd:string">b</item>
+                </tags>
+            </item>
+        </ns1:GetItemResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

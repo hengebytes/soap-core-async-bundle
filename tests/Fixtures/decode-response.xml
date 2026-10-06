@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <AvailabilityRS xmlns="http://test-uri/" EchoToken="abc-1">
+            <Success/>
+            <Room Code="EK1" Quantity="148">
+                <Name>Superior King</Name>
+                <Rate RatePlanCode="RFLX" Start="2027-03-05" End="2027-03-10" Points="1200">
+                    <Code>R1</Code>
+                    <Total CurrencyCode="HKD" TaxInclusive="false">17318.84</Total>
+                    <Description>Flexible rate</Description>
+                    <Description>Breakfast included</Description>
+                    <Discount xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                    <Policy Refundable="true" Deadline="3">
+                        <Text>Free cancellation</Text>
+                        <Penalty CurrencyCode="HKD">0.00</Penalty>
+                        <Penalty>1798.42</Penalty>
+                    </Policy>
+                </Rate>
+                <Rate RatePlanCode="RNRF"/>
+                <Amenity>Wifi</Amenity>
+            </Room>
+            <Room>
+                <Rate RatePlanCode="RPKG">
+                    <Total>810.00</Total>
+                    <Policy/>
+                </Rate>
+            </Room>
+            <Room Code="EMPTY"/>
+        </AvailabilityRS>
+    </s:Body>
+</s:Envelope>

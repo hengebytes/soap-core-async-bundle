@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Covers the schema shapes the bundle's ObjectEncoder must handle like php-soap's own one:
+     absent optional elements/attributes, nested and repeating complex types, nillable elements,
+     anonymous inline types, complexContent extensions and simpleContent with attributes. -->
+<definitions name="DecodeTest"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://test-uri/"
+    targetNamespace="http://test-uri/">
+    <types>
+        <xsd:schema targetNamespace="http://test-uri/" elementFormDefault="qualified">
+            <xsd:complexType name="Amount">
+                <xsd:simpleContent>
+                    <xsd:extension base="xsd:decimal">
+                        <xsd:attribute name="CurrencyCode" type="xsd:string"/>
+                        <xsd:attribute name="TaxInclusive" type="xsd:boolean"/>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:complexType name="BaseRate">
+                <xsd:sequence>
+                    <xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Total" type="tns:Amount" minOccurs="0"/>
+                </xsd:sequence>
+                <xsd:attribute name="Start" type="xsd:date"/>
+                <xsd:attribute name="End" type="xsd:date"/>
+            </xsd:complexType>
+            <xsd:complexType name="Rate">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:BaseRate">
+                        <xsd:sequence>
+                            <xsd:element name="Description" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="Discount" type="tns:Amount" minOccurs="0" nillable="true"/>
+                            <xsd:element name="Policy" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Text" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="Penalty" type="tns:Amount" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="Refundable" type="xsd:boolean"/>
+                                    <xsd:attribute name="Deadline" type="xsd:int"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="RatePlanCode" type="xsd:string" use="required"/>
+                        <xsd:attribute name="Points" type="xsd:int"/>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="Room">
+                <xsd:sequence>
+                    <xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Rate" type="tns:Rate" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="Amenity" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="Code" type="xsd:string"/>
+                <xsd:attribute name="Quantity" type="xsd:int"/>
+            </xsd:complexType>
+            <xsd:element name="AvailabilityRS">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Success" minOccurs="0">
+                            <xsd:complexType/>
+                        </xsd:element>
+                        <xsd:element name="Room" type="tns:Room" minOccurs="0" maxOccurs="unbounded"/>
+                        <xsd:element name="Warning" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                    <xsd:attribute name="EchoToken" type="xsd:string"/>
+                    <xsd:attribute name="Version" type="xsd:decimal"/>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="AvailabilityRQ">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="HotelCode" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="AvailabilityRequest">
+        <part name="parameters" element="tns:AvailabilityRQ"/>
+    </message>
+    <message name="AvailabilityResponse">
+        <part name="parameters" element="tns:AvailabilityRS"/>
+    </message>
+    <portType name="TestPortType">
+        <operation name="CheckAvailability">
+            <input message="tns:AvailabilityRequest"/>
+            <output message="tns:AvailabilityResponse"/>
+        </operation>
+    </portType>
+    <binding name="TestBinding" type="tns:TestPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="CheckAvailability">
+            <soap:operation soapAction="http://test-uri/CheckAvailability"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+    <service name="TestService">
+        <port name="TestPort" binding="tns:TestBinding">
+            <soap:address location="http://localhost/soap"/>
+        </port>
+    </service>
+</definitions>

@@ -67,3 +67,13 @@ readonly class SoapHeaderRequestModifier implements RequestModifierInterface
     }
 }
 ```
+## Decoding performance (php-soap/encoding override)
+
+php-soap/encoding decodes absent elements/attributes and `stdClass` properties via thrown-and-caught exceptions, which makes
+large responses very slow (a 3 MB SynXis availability response took ~6 s). The bundle therefore registers its own copy of
+`ObjectEncoder`/`ObjectAccess` (`src/Encoding/Encoder`, wired in by `EncoderRegistryFactory`) for every complex type; it
+decodes the same response in ~0.35 s with identical output.
+
+The copies are based on php-soap/encoding **0.35.0**, which is why that version is pinned exactly. Every change is wrapped in
+`// + OVERRIDE START` / `// - OVERRIDE END`. When upgrading php-soap/encoding, re-copy both files from the new version,
+re-apply the override blocks and run `vendor/bin/phpunit` (coverage + parity with php-soap's own decoder).
