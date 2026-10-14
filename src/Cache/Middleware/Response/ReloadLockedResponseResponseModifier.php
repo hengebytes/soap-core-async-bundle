@@ -11,7 +11,6 @@ use Hengebytes\WebserviceCoreAsyncBundle\Response\AsyncResponse;
 use Hengebytes\WebserviceCoreAsyncBundle\Response\ParsedResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use Symfony\Component\HttpFoundation\Response;
 
 #[AsDecorator(decorates: BaseModifier::class, onInvalid: ContainerInterface::IGNORE_ON_INVALID_REFERENCE)]
 readonly class ReloadLockedResponseResponseModifier implements ResponseModificationInterface
@@ -27,16 +26,10 @@ readonly class ReloadLockedResponseResponseModifier implements ResponseModificat
     {
         if ($response->WSRequest instanceof SoapWSRequest) {
             $response->addOnResponseReceivedCallback(new OnResponseReceivedCallback(
-                function (ParsedResponse $parsedResponse) {
-                    if (
-                        $parsedResponse->response
-                        || $parsedResponse->headers
-                        || $parsedResponse->mainAsyncResponse->WSResponse->getStatusCode() !== Response::HTTP_LOCKED
-                    ) {
-                        return;
-                    }
-                    $parsedResponse->mainAsyncResponse->WSResponse = $this->requestHandler->request($parsedResponse->mainAsyncResponse->WSRequest)->WSResponse;
-                }
+                fn(ParsedResponse $parsedResponse) => BaseModifier::reloadLockedResponse(
+                    $parsedResponse,
+                    $this->requestHandler
+                )
             ));
 
             return;
