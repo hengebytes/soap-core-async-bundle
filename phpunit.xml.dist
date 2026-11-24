@@ -6,6 +6,10 @@
          cacheDirectory=".phpunit.cache"
          failOnWarning="true"
          failOnRisky="true">
+    <php>
+        <!-- DecodingSpeedTest decodes a 3 MB response -->
+        <ini name="memory_limit" value="512M"/>
+    </php>
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

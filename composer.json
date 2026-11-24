@@ -13,15 +13,14 @@
         "php": ">=8.4",
         "hengebytes/webservice-core-async-bundle": "^1.3.11",
         "php-http/discovery": "^1.20",
-        "php-soap/engine": "^2.20",
-        "php-soap/encoding": "0.35.0",
-        "php-soap/psr18-transport": "^2.1",
-        "php-soap/wsdl": "^1.22",
-        "php-soap/wsdl-reader": "^0.33",
-        "php-soap/xml": "^1.11",
-        "symfony/dependency-injection": "^6.4 || ^7.0",
-        "veewee/reflecta": "^1.0",
-        "veewee/xml": "^4.13"
+        "php-soap/engine": "^2.22",
+        "php-soap/encoding": "^0.37",
+        "php-soap/psr18-transport": "^2.2",
+        "php-soap/wsdl": "^1.23",
+        "php-soap/wsdl-reader": "^0.35",
+        "php-soap/xml": "^1.12",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "veewee/xml": "^4.15"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.4"

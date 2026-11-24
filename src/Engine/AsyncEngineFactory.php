@@ -2,7 +2,6 @@
 
 namespace Hengebytes\SoapCoreAsyncBundle\Engine;
 
-use Hengebytes\SoapCoreAsyncBundle\Encoding\EncoderRegistryFactory;
 use Hengebytes\SoapCoreAsyncBundle\Wsdl\FileCacheWsdlLoader;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Soap\Encoding\Driver;
@@ -28,7 +27,7 @@ abstract class AsyncEngineFactory
             );
 
             $metadata = (new Wsdl1MetadataProvider($wsdl, ServiceSelectionCriteria::defaults()))->getMetadata();
-            $driver = Driver::createFromMetadata($metadata, $wsdl->namespaces, EncoderRegistryFactory::create($metadata));
+            $driver = Driver::createFromMetadata($metadata, $wsdl->namespaces);
 
             self::$engines[$location] = new AsyncEngine(
                 $driver,
