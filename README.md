@@ -67,10 +67,3 @@ readonly class SoapHeaderRequestModifier implements RequestModifierInterface
     }
 }
 ```
-## Decoding performance
-
-Up to php-soap/encoding 0.35 the bundle carried its own copy of php-soap's object encoder: the library decoded absent
-elements, attributes and `stdClass` properties through thrown-and-caught exceptions, which made large responses very
-slow (a 3 MB SynXis availability response took ~6 s). php-soap/encoding 0.36 decodes without them, so the bundle uses
-the library's encoders as they are and no longer pins its version. `tests/Encoding` keeps the decoding the bundle's
-users rely on (absent nodes as `null`, empty lists, rpc/encoded arrays) under test across upgrades.
